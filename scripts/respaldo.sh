@@ -34,8 +34,9 @@ ARCHIVO="$DESTINO/respaldo-$NOMBRE-$FECHA.tar.gz"
 # Si existe pg_dump, también se respalda la base (opcional en la práctica)
 if command -v pg_dump >/dev/null 2>&1; then
   echo "Respaldando base de datos en $DB_HOST con el usuario $DB_USER..."
-  PGPASSWORD="$DB_PASSWORD" pg_dump -h "$DB_HOST" -U "$DB_USER" -f "$ORIGEN/base.sql" \
-    || echo "Aviso: no se pudo respaldar la base; se continúa solo con archivos." >&2
+  PGPASSWORD="$DB_PASSWORD" pg_dump -h "$DB_HOST" -U "$DB_USER" -f "$DESTINO/base-$FECHA.sql" \
+    || { rm -f "$DESTINO/base-$FECHA.sql"
+         echo "Aviso: no se pudo respaldar la base; se continúa solo con archivos." >&2; }
 fi
 
 # Comprimir la carpeta (tar y gzip existen en macOS, Linux y Git Bash)
