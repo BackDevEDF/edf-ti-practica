@@ -35,7 +35,7 @@ repo de trabajo: no lo copies, avisa a tu líder y rota la credencial.
 Funciona en macOS, Linux y Windows (con Git Bash).
 
 ```bash
-git clone https://github.com/<organizacion>/edf-ti-practica.git
+git clone https://github.com/F-Urquizo/edf-ti-practica.git
 cd edf-ti-practica
 claude
 ```
