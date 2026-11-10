@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # respaldo.sh - Comprime una carpeta en respaldos/ con la fecha en el nombre.
-# Uso: DB_HOST=... DB_USER=... DB_PASSWORD=... ./scripts/respaldo.sh <carpeta>
+# Uso: exporta DB_HOST, DB_USER y DB_PASSWORD, y luego: ./scripts/respaldo.sh <carpeta>
 # Las credenciales de la base se leen SIEMPRE de variables de entorno, nunca del script.
 set -euo pipefail
 
