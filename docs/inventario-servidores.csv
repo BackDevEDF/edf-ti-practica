@@ -1,0 +1,11 @@
+nombre,rol,sistema_operativo,entorno,responsable
+srv-app-dev-01,servidor de aplicaciones,Ubuntu 22.04 LTS,desarrollo,Equipo Desarrollo
+srv-app-prod-01,servidor de aplicaciones,RHEL 9.2,produccion,Equipo Operaciones TI
+srv-app-prod-02,servidor de aplicaciones,RHEL 9.2,produccion,Equipo Operaciones TI
+db-dev-01,base de datos PostgreSQL,Ubuntu 22.04 LTS,desarrollo,Equipo Datos
+db-prod-01,base de datos PostgreSQL,RHEL 9.2,produccion,Equipo Datos
+srv-web-qa-01,servidor web Nginx,Debian 12,qa,Equipo Desarrollo
+srv-batch-prod-01,procesos batch nocturnos,RHEL 8.8,produccion,Equipo Operaciones TI
+srv-respaldos-01,almacenamiento de respaldos,Ubuntu 20.04 LTS,produccion,Equipo Infraestructura
+srv-monitoreo-01,monitoreo y alertas,Debian 12,produccion,Equipo Infraestructura
+srv-ad-01,controlador de dominio,Windows Server 2022,produccion,Equipo Infraestructura

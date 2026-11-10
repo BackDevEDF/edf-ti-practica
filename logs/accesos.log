@@ -1,0 +1,5 @@
+2026-11-03 07:58:12 srv-app-prod-01 sesión iniciada por usuario jlopez desde 10.20.4.15
+2026-11-03 08:30:47 srv-app-prod-01 intento fallido de acceso para usuario admin desde 10.20.9.201
+2026-11-03 08:30:52 srv-app-prod-01 intento fallido de acceso para usuario admin desde 10.20.9.201
+2026-11-03 12:10:05 db-prod-01 sesión iniciada por usuario mgarcia desde 10.20.4.22
+2026-11-03 19:45:00 srv-app-prod-01 sesión cerrada por usuario jlopez

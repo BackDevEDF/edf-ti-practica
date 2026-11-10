@@ -1,0 +1,10 @@
+# Configuración personal de Claude Code (no se comparte)
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Respaldos generados por scripts/respaldo.sh
+respaldos/
+
+# OJO: .env, config/.env.produccion y llaves/ NO se ignoran.
+# Se versionan a propósito para la práctica de la Sesión 1 (datos ficticios).
+# En un repositorio real, .env* y llaves/ siempre deben ir aquí.

@@ -1,0 +1,5 @@
+2026-11-02 02:00:00 INFO  inicio de respaldo nocturno en srv-respaldos-01
+2026-11-02 02:03:41 INFO  respaldo-conciliacion-20261102-020000.tar.gz creado (412 MB)
+2026-11-03 02:00:00 INFO  inicio de respaldo nocturno en srv-respaldos-01
+2026-11-03 02:04:12 WARN  espacio libre en disco por debajo del 15%
+2026-11-03 02:04:15 INFO  respaldo-conciliacion-20261103-020000.tar.gz creado (418 MB)
