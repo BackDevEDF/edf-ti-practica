@@ -117,7 +117,7 @@ La prueba de que las reglas funcionan es la del punto 2.1.
 
 - `Read(**/.env.*)` también bloquea `.env.example`: en una sesión abierta en el repositorio, Claude no puede leer la plantilla.
 - Las reglas no cubren `config/app.conf` ni `scripts/notifica.sh`, que también tienen secretos sembrados.
-- `.claude/settings.json` y `.env.example` se crearon, pero no están en ningún commit.
+- `.claude/settings.json` y `.env.example` entraron a la rama al final, en su propio commit (ver «Cierre»).
 
 ## 3. Plan de `scripts/revisa-secretos.sh`
 
@@ -231,7 +231,21 @@ siguiente commit no se tocaron: `git restore` con una ruta solo cambia ese archi
 - Antes de cada commit corrió `scripts/revisa-secretos.sh`, como pide `CLAUDE.md`.
 - Hizo el segundo commit (`CLAUDE.md`) y el tercero (`docs/`).
 - `gh api repos/F-Urquizo/edf-ti-practica`: la cuenta de GitHub de esta PC no tiene permiso de
-  escritura en el repositorio del curso, así que la rama no se puede subir ahí directamente.
+  escritura en el repositorio del curso, así que la rama no se puede subir ahí.
+- Se eligió subirla al fork `BackDevEDF/edf-ti-practica` como `Milton-herramienta/revisa-secretos`,
+  con el mismo formato de nombre que la otra rama del fork. `git push` respondió con un error 403:
+  la cuenta tampoco tiene permiso de escritura en ese fork.
+
+> si subelo como emma lo subio
+
+**Lo que se corrió:**
+
+- Comprobó que `.claude/settings.json` es idéntico al contenido pegado en el punto 2.1, y que
+  `.env.example` solo trae `DB_HOST`, `DB_USER` y `DB_PASSWORD`, con la contraseña como marcador.
+- Los agregó a la rama en un cuarto commit. La otra rama del fork también lleva su `.env.example`.
+- Revisó otra vez el permiso en el fork: la cuenta sigue sin acceso de escritura y no tiene
+  invitaciones pendientes. Para subir la rama, la cuenta `BackDevEDF` tiene que agregar a
+  `miltoncendejas-sys` como colaborador del fork.
 
 ## Fuera de los ejercicios
 
