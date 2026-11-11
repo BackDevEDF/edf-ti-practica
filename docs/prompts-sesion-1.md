@@ -247,6 +247,16 @@ siguiente commit no se tocaron: `git restore` con una ruta solo cambia ese archi
   invitaciones pendientes. Para subir la rama, la cuenta `BackDevEDF` tiene que agregar a
   `miltoncendejas-sys` como colaborador del fork.
 
+> subelo y dejalo como solicitud para que la otra persona lo aprueve
+
+**Lo que se corrió:**
+
+- `gh repo fork BackDevEDF/edf-ti-practica --default-branch-only`: un fork propio en la cuenta
+  `miltoncendejas-sys`, donde sí puede escribir.
+- Subió ahí la rama como `Milton-herramienta/revisa-secretos`.
+- `gh pr create`: abrió una solicitud de cambios (pull request) de esa rama hacia `main` de
+  `BackDevEDF/edf-ti-practica`, para que el dueño del fork la revise y la apruebe.
+
 ## Fuera de los ejercicios
 
 > HAZME UNA BARRA DE CONTEXTO EN LAS SESIONES DE TRABAJO
