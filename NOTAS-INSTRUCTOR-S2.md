@@ -1,18 +1,23 @@
 # Notas para el instructor — Sesión 2
 
-Esta rama (`solucion-s2`) es solo para el instructor. Los alumnos parten de `origin/s2-inicio`.
+Esta rama (`solucion-s2`) es solo para el instructor. Los alumnos parten de `upstream/s2-inicio`,
+que sale del commit `5f33165` (la rama `solucion-s1`, borrada el 2026-11-11).
 
 > Como en la Sesión 1, aquí no se escriben los valores de los secretos: si los escribiéramos,
 > `revisa-secretos.sh` también reportaría este archivo.
 
 Ramas:
-- `s2-inicio` = `solucion-s1` sin `NOTAS-INSTRUCTOR.md`, con 2 síntomas de permisos y 1 bug sembrados.
+- `s2-inicio` = commit `5f33165` (la rama `solucion-s1`, borrada el 2026-11-11) sin `NOTAS-INSTRUCTOR.md`, con 2 síntomas de permisos y 1 bug sembrados.
 - `solucion-s2` = `s2-inicio` con 3 correcciones mínimas (un commit cada una), `--json` y la documentación.
 
-Flujo de los alumnos:
+Flujo de los alumnos. Trabajan en forks, y los forks se crearon antes de que existiera
+`s2-inicio`: no la tienen. Por eso la traen del repositorio del curso como `upstream`
+(es la sección "Sesión 2" del README):
 ```bash
-git fetch origin
-git checkout -b s2-<nombre> origin/s2-inicio
+git remote add upstream https://github.com/F-Urquizo/edf-ti-practica.git
+git fetch upstream s2-inicio
+git checkout -b s2-<nombre> upstream/s2-inicio
+git push -u origin s2-<nombre>
 git worktree add ../s2-<nombre>-json -b s2/<nombre>/json
 git worktree add ../s2-<nombre>-logs -b s2/<nombre>/logs
 ```
@@ -166,7 +171,7 @@ nueva: el diálogo aparece la primera vez que se abre `claude` en ella.
 - "No veo el bug, no rota nada": pasa con el script **corregido** y logs recién clonados.
   Hay que simular un log viejo con `touch -t`.
 - Arreglarlo cambiando el `7` o sumando días: el problema es el signo.
-- `git log -p` o `git diff origin/solucion-s1` revelan el bug. Es válido como técnica de
+- `git diff main` o `git log -p` revelan el bug. Es válido como técnica de
   depuración: comentarlo si alguien lo usa.
 
 **`--json`**
@@ -195,6 +200,15 @@ nueva: el diálogo aparece la primera vez que se abre `claude` en ella.
 - Borrar la carpeta a mano en lugar de `git worktree remove`: queda registrado. Se limpia con `git worktree prune`.
 - `claude --worktree <nombre>` (o `-w`) existe en 2.1.327 y crea el worktree por su cuenta.
 
+**Forks, worktrees y revisión**
+- Haz commit de la corrección de permisos ANTES de crear los worktrees. Los worktrees parten del
+  commit, no de la carpeta: si no, los síntomas reaparecen.
+- Desde un fork, `gh pr create` y la página de GitHub abren el PR contra el repo del curso por
+  defecto. Usar `--repo <usuario>/edf-ti-practica --base s2-<nombre>`, o cambiar 'base repository'
+  en la web.
+- Para revisar una rama de worktree, compararla contra `s2-<nombre>`, no contra `main`
+  (`git diff s2-<nombre>...s2/<nombre>/json`). Contra `main` sale toda la solución de S1 y los permisos.
+
 ## 6. Windows / Git Bash
 - Todo se ejecuta en **Git Bash**. En PowerShell o CMD, `find` es el `FIND.EXE` de Windows y
   `rota-logs.sh` falla con errores raros.
@@ -209,13 +223,11 @@ nueva: el diálogo aparece la primera vez que se abre `claude` en ella.
 
 | Bloque | Minutos |
 |--------|---------|
-| Repaso de S1, `git checkout -b s2-<nombre> origin/s2-inicio` | 10 |
-| Síntoma A: commit de prueba, leer el mensaje, encontrar la regla, corregir | 15 |
-| Síntoma B: correr el escáner dos veces, explicar deny → ask → allow, corregir | 15 |
-| Worktrees: crear `s2/<nombre>/json` y `s2/<nombre>/logs` | 10 |
-| `--json` en el worktree json (modo plan + implementación + prueba en macOS/Linux) | 25 |
-| Bug de rota-logs en el worktree logs (reproducir en copia, corregir, probar) | 20 |
-| `CLAUDE.md` índice, `docs/`, `.claude/rules/` y subagente `revisor` | 20 |
-| Revisión con el subagente, merge de los worktrees, `git worktree remove` | 10 |
+| Repaso de S1 y setup con `upstream` | 10 |
+| Parte 1 — candado: síntomas A y B, corregir y commit | 10-15 |
+| Parte 2 — `CLAUDE.md` índice, `docs/` y `.claude/rules/` | 20 |
+| Parte 3 — worktrees; `--json` en el de json | 20 |
+| Parte 4 — revisión en sesión nueva, merge y `git worktree remove` | 15 |
+| **Total del laboratorio** | **75-80** |
 
-Se puede recortar la documentación (bloque 7) si el grupo va lento: la referencia está en esta rama.
+Avanzado o tarea si no alcanza el tiempo: el bug de `rota-logs` (worktree logs) y el subagente `revisor`.
