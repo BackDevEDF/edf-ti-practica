@@ -4,10 +4,8 @@
       "Read(**/.env)",
       "Read(**/.env.*)",
       "Read(**/llaves/**)",
-      "Bash(git commit *)",
       "Read(~/.ssh/**)",
       "Bash(cat .env*)",
-      "Bash(git commit)",
       "Bash(rm -rf *)"
     ],
     "ask": [
