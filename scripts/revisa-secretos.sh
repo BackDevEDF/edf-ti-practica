@@ -2,13 +2,40 @@
 # revisa-secretos.sh - Busca secretos expuestos en un repositorio.
 # Reporta ruta, línea y tipo de cada hallazgo. NUNCA imprime el valor del secreto.
 #
-# Uso:    ./scripts/revisa-secretos.sh [carpeta]   (por defecto: la carpeta actual)
+# Uso:    ./scripts/revisa-secretos.sh [--json] [carpeta]   (por defecto: la carpeta actual)
+#         --json  imprime solo un arreglo JSON: [{"ruta": ..., "linea": ..., "tipo": ...}]
+#                 ("linea" es null para los archivos .env, que se reportan completos)
 # Salida: código 0 si no hay hallazgos, 1 si encuentra algo, 2 si hay error de uso.
+#         El código de salida es el mismo con o sin --json.
 #
-# Solo usa bash y grep. Compatible con bash 3.2 (macOS), Linux y Git Bash.
+# Solo usa bash y grep (sin jq). Compatible con bash 3.2 (macOS), Linux y Git Bash.
 set -euo pipefail
 
-DIR="${1:-.}"
+MODO_JSON=0
+DIR=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --json) MODO_JSON=1 ;;
+    -h|--help)
+      echo "Uso: $0 [--json] [carpeta]"
+      exit 0
+      ;;
+    -*)
+      echo "Error: opción desconocida '$1'. Uso: $0 [--json] [carpeta]" >&2
+      exit 2
+      ;;
+    *)
+      if [ -n "$DIR" ]; then
+        echo "Error: indica solo una carpeta. Uso: $0 [--json] [carpeta]" >&2
+        exit 2
+      fi
+      DIR="$1"
+      ;;
+  esac
+  shift
+done
+DIR="${DIR:-.}"
+
 if [ ! -d "$DIR" ]; then
   echo "Error: la carpeta '$DIR' no existe." >&2
   exit 2
@@ -35,11 +62,36 @@ N_TOKEN=0
 N_PASSWORD=0
 TOTAL=0
 
-# Imprime un hallazgo: ruta, línea y tipo. Nunca recibe el contenido de la línea.
+# Hallazgos en JSON, ya escritos como objetos y separados por ",\n"
+JSON_ITEMS=""
+
+# Escapa una cadena para usarla dentro de comillas en JSON (\ y ")
+json_escapar() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  printf '%s' "$s"
+}
+
+# Registra un hallazgo: ruta, línea y tipo. Nunca recibe el contenido de la línea.
+# En modo tabla lo imprime de inmediato; en modo JSON lo acumula para el final.
 reportar() {
-  local ruta="${1#./}" linea="$2" tipo="$3"
-  printf '%-32s %-6s %s\n' "$ruta" "$linea" "$tipo"
+  local ruta="${1#./}" linea="$2" tipo="$3" linea_json objeto
   TOTAL=$((TOTAL + 1))
+  if [ "$MODO_JSON" -eq 0 ]; then
+    printf '%-32s %-6s %s\n' "$ruta" "$linea" "$tipo"
+    return
+  fi
+  # Los .env se reportan completos (línea "-"): en JSON van como null
+  if [ "$linea" = "-" ]; then linea_json="null"; else linea_json="$linea"; fi
+  objeto="$(printf '  {"ruta": "%s", "linea": %s, "tipo": "%s"}' \
+    "$(json_escapar "$ruta")" "$linea_json" "$tipo")"
+  if [ -z "$JSON_ITEMS" ]; then
+    JSON_ITEMS="$objeto"
+  else
+    JSON_ITEMS="$JSON_ITEMS,
+$objeto"
+  fi
 }
 
 # Busca un patrón línea por línea y reporta "ruta linea tipo".
@@ -56,10 +108,12 @@ buscar_por_linea() {
   done < <(grep -rnIiE "${EXCLUIR_DIRS[@]}" "${EXCLUIR_SCRIPT[@]}" "${EXCLUIR_ENV[@]}" -e "$patron" . | cut -d: -f1,2 || true)
 }
 
-echo "Revisando secretos en: $DIR"
-echo
-printf '%-32s %-6s %s\n' "ARCHIVO" "LINEA" "TIPO"
-printf '%-32s %-6s %s\n' "-------" "-----" "----"
+if [ "$MODO_JSON" -eq 0 ]; then
+  echo "Revisando secretos en: $DIR"
+  echo
+  printf '%-32s %-6s %s\n' "ARCHIVO" "LINEA" "TIPO"
+  printf '%-32s %-6s %s\n' "-------" "-----" "----"
+fi
 
 # 1) Archivos .env versionados (se reporta el archivo completo; las plantillas se omiten)
 # Nota: --include debe ir ANTES que cualquier --exclude; en GNU grep (Linux, Git Bash)
@@ -74,6 +128,17 @@ done < <(grep -rlIE --include=.env --include='.env.*' \
 buscar_por_linea "$PATRON_LLAVE" "llave-privada"
 buscar_por_linea "$PATRON_TOKEN" "token-hardcodeado"
 buscar_por_linea "$PATRON_PASSWORD" "password-hardcodeado"
+
+# Modo JSON: solo el arreglo en stdout; mismo código de salida que el modo tabla
+if [ "$MODO_JSON" -eq 1 ]; then
+  if [ -z "$JSON_ITEMS" ]; then
+    echo "[]"
+  else
+    printf '[\n%s\n]\n' "$JSON_ITEMS"
+  fi
+  if [ "$TOTAL" -gt 0 ]; then exit 1; fi
+  exit 0
+fi
 
 # Resumen por tipo
 echo
