@@ -11,7 +11,6 @@
     "ask": [
       "Bash(git push *)",
       "Bash(docker *)",
-      "Bash(./scripts/*)",
       "Bash(systemctl *)",
       "Bash(ssh *)"
     ],
