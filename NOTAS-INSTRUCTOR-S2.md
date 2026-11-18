@@ -68,8 +68,16 @@ Si Claude junta comandos (`./scripts/revisa-secretos.sh; echo "EXIT=$?"`), el me
 This Bash command contains multiple operations. The following parts require approval: ./scripts/revisa-secretos.sh, echo "EXIT=$?"
 ```
 
+**Ya corregido** (`solucion-s2`, commit sin regla). En modo interactivo aparece el diálogo
+normal de aprobación. En `claude -p` sale:
+```
+This command requires approval
+```
+Con `--allowedTools "Bash(git commit *)"`, o aprobando en el diálogo, el commit se hace.
+
 **Diferencia clave para explicar:** "has been denied" = una regla `deny`, que no se puede
-aprobar. "requested permissions… haven't granted it yet" = `ask` o sin regla: se puede aprobar.
+aprobar. "requested permissions… haven't granted it yet" o "requires approval" = `ask` o sin
+regla: se puede aprobar.
 
 **Reglas de la Sesión 1** (siguen funcionando en ambas ramas). La herramienta Read responde
 para `.env`, `config/.env.produccion` y `llaves/id_practica`:
@@ -168,6 +176,16 @@ nueva: el diálogo aparece la primera vez que se abre `claude` en ella.
 - Cambiar el código de salida en modo JSON (salir con 0 siempre).
 - Usar `jq`: no existe en macOS ni en Git Bash de serie.
 - Romper la salida sin `--json` (comparar con `diff` contra la de la Sesión 1).
+
+**Subagente `revisor`**
+- Aparece en `/agents` y en la lista de agentes al abrir `claude` en `solucion-s2`. En `s2-inicio` no
+  existe: los alumnos lo crean.
+- Si ejecuta `git -C /ruta/absoluta diff ...`, el comando no coincide con `Bash(git diff *)` y pide
+  aprobación. Por eso el prompt del agente le pide no usar `-C` ni rutas absolutas.
+- La restricción "Bash solo para git diff/log/show" está en el prompt: el campo `tools` no limita
+  los comandos de Bash. La barrera real siguen siendo las reglas `deny` y `ask` del proyecto.
+- Prueba sugerida: una rama con un script que use `declare -A`, un `grep -c` sin `|| true` y un
+  `echo` de una variable de contraseña. Debe dar 3 bloqueantes.
 
 **Worktrees**
 - Un alumno que ya tiene una rama llamada `s2/<nombre>` no puede crear `s2/<nombre>/json`

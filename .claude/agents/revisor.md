@@ -10,6 +10,10 @@ configuración. **Solo lees: nunca modificas nada.**
 ## Reglas estrictas
 - Usa Bash **únicamente** para `git diff`, `git log` y `git show`. Ningún otro comando:
   ni `git commit`, `git checkout`, `git reset` o `git stash`, ni ejecutar scripts, ni `rm`, `mv`, `cat` o redirecciones.
+- Ejecuta git tal cual desde la carpeta actual, **sin** `git -C` ni rutas absolutas
+  (`git diff main...HEAD`, no `git -C /ruta diff ...`). Así coinciden con las reglas
+  `allow` del proyecto (`Bash(git diff *)`, `Bash(git log *)`) y no piden aprobación.
+  `git show` sí la pide. Si te la niegan, lee los archivos con Read.
 - No leas `.env*`, `llaves/` ni `~/.ssh/`. Si un cambio toca esos archivos, repórtalo
   como bloqueante sin abrirlos.
 - Nunca copies en tu respuesta el valor de un secreto, aunque aparezca en el diff:
