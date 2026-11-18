@@ -4,20 +4,25 @@
       "Read(**/.env)",
       "Read(**/.env.*)",
       "Read(**/llaves/**)",
+      "Bash(git commit *)",
       "Read(~/.ssh/**)",
       "Bash(cat .env*)",
+      "Bash(git commit)",
       "Bash(rm -rf *)"
     ],
     "ask": [
       "Bash(git push *)",
       "Bash(docker *)",
+      "Bash(./scripts/*)",
       "Bash(systemctl *)",
       "Bash(ssh *)"
     ],
     "allow": [
       "Bash(git status)",
       "Bash(git diff *)",
-      "Bash(git log *)"
+      "Bash(git log *)",
+      "Bash(./scripts/revisa-secretos.sh)",
+      "Bash(./scripts/revisa-secretos.sh *)"
     ]
   }
 }
