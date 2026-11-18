@@ -34,11 +34,10 @@ Renombra cada `.log` de `logs/` a `<nombre>-AAAAMMDD.log` (fecha de la rotación
 con `gzip`. Imprime un renglón por archivo y el total. `[dias]` vale 7 por omisión. Si `logs/` no
 existe, avisa y sale con 0.
 
-**Problema conocido:** el `find` usa `-mtime -"$DIAS"`, que selecciona los logs modificados en
-los últimos N días, es decir, los que siguen en uso. El comentario del script y el README dicen
-"con más de N días", lo que corresponde a `-mtime +"$DIAS"`. Apareció en el commit `76ac01e`
-("Prepara la rama de inicio de la Sesión 2"), probablemente a propósito para la práctica.
-`bash -n` no lo detecta; solo se ve leyendo el diff. Sigue sin corregirse.
+Solo rota los logs con **más de** `[dias]` días sin modificarse (`find -mtime +"$DIAS"`). Antes
+usaba `-mtime -"$DIAS"`, que elegía los modificados en los últimos N días, es decir, los que
+siguen en uso; el error entró en el commit `76ac01e` y `bash -n` no lo detecta. Un log de hoy
+no se rota, y una segunda corrida el mismo día da `Logs rotados: 0`.
 
 ## notifica.sh
 
