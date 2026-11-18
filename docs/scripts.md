@@ -12,7 +12,7 @@ escribe su valor). Si cambias un script, actualiza este archivo en el mismo comm
 | `respaldo.sh` | Respaldar una carpeta y, si se puede, la base | `./scripts/respaldo.sh <carpeta>` | 0 ok, 2 uso incorrecto |
 | `rota-logs.sh` | Rotar y comprimir logs viejos | `./scripts/rota-logs.sh [dias]` | 0 ok |
 | `notifica.sh` | Avisar a un webhook | `./scripts/notifica.sh "mensaje"` | 0 ok, 1 falló el envío, 2 uso incorrecto |
-| `revisa-secretos.sh` | Buscar secretos expuestos | `./scripts/revisa-secretos.sh [carpeta]` | 0 limpio, 1 hallazgos, 2 error |
+| `revisa-secretos.sh` | Buscar secretos expuestos | `./scripts/revisa-secretos.sh [--json] [carpeta]` | 0 limpio, 1 hallazgos, 2 error |
 
 ## respaldo.sh
 
@@ -62,6 +62,11 @@ cada hallazgo, **nunca el valor**. Solo usa bash y grep.
 - **No revisa:** `.git/`, `node_modules/`, `respaldos/` ni a sí mismo.
 - **Salida:** una tabla, un resumen por tipo y el total. Código 1 si hay algún hallazgo, 2 si
   la carpeta no existe.
+- **`--json`:** imprime solo un arreglo JSON de objetos `{"ruta", "linea", "tipo"}`, sin tabla ni
+  resumen y nunca con el valor del secreto. `linea` es `null` en los `.env` (se reportan como
+  archivo completo). Sin hallazgos imprime `[]`. Los códigos de salida son los mismos que sin la
+  opción. Va antes o después de `[carpeta]`. No necesita `jq`. Límite: no escapa tabuladores ni
+  bytes de control en nombres de archivo.
 - **Resultado esperado en este repositorio:** 5 hallazgos sembrados a propósito:
   `.env`, `config/.env.produccion`, `llaves/id_practica`, `scripts/notifica.sh` y
   `config/app.conf`. Por eso sale con código 1. Cualquier hallazgo fuera de esos cinco es nuevo:
