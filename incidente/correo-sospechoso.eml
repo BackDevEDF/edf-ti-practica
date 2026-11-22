@@ -1,0 +1,59 @@
+Return-Path: <soporte@ejemplo-edf.mx>
+Delivered-To: jlopez@ejemplo-edf.mx
+Received: from mx1.ejemplo-edf.mx (mx1.ejemplo-edf.mx [10.20.0.25])
+	by buzon01.ejemplo-edf.mx (Postfix) with ESMTP id 4QzK1L6xYwz9tR
+	for <jlopez@ejemplo-edf.mx>; Sat, 21 Nov 2026 06:02:16 -0600 (CST)
+Authentication-Results: mx1.ejemplo-edf.mx;
+	spf=softfail (mx1.ejemplo-edf.mx: domain of transitioning soporte@ejemplo-edf.mx does not designate 198.51.100.201 as permitted sender) smtp.mailfrom=soporte@ejemplo-edf.mx;
+	dkim=none (message not signed) header.d=none;
+	dmarc=fail (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=ejemplo-edf.mx
+Received-SPF: SoftFail (mx1.ejemplo-edf.mx: domain of transitioning soporte@ejemplo-edf.mx does not designate 198.51.100.201 as permitted sender) client-ip=198.51.100.201; envelope-from=soporte@ejemplo-edf.mx; helo=smtp3.hosting-vps.example;
+Received: from smtp3.hosting-vps.example (smtp3.hosting-vps.example [198.51.100.201])
+	by mx1.ejemplo-edf.mx (Postfix) with ESMTPS id 4QzK1K2mPqz9tN
+	for <jlopez@ejemplo-edf.mx>; Sat, 21 Nov 2026 06:02:14 -0600 (CST)
+Received: from [10.8.0.14] (unknown [198.51.100.201])
+	by smtp3.hosting-vps.example (Postfix) with ESMTPSA id 7C1E2A0153
+	for <jlopez@ejemplo-edf.mx>; Sat, 21 Nov 2026 15:02:11 +0300 (MSK)
+From: "Mesa de Ayuda TI" <soporte@ejemplo-edf.mx>
+Reply-To: "Mesa de Ayuda TI" <mesa.ayuda@soporte-ejemplo-edf.example>
+To: jlopez@ejemplo-edf.mx
+Subject: =?UTF-8?B?QWNjacOzbiByZXF1ZXJpZGE6IHN1IGNvbnRyYXNlw7FhIHZlbmNlIGhveQ==?=
+Date: Sat, 21 Nov 2026 15:02:09 +0300
+Message-ID: <20261121120209.7C1E2A0153@smtp3.hosting-vps.example>
+X-Mailer: PHPMailer 6.9.1 (https://github.com/PHPMailer/PHPMailer)
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="b1_frontera_7c1e2a0153"
+
+--b1_frontera_7c1e2a0153
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Estimado colaborador:
+
+Su contraseña de acceso a los sistemas de EDF vence HOY. Para evitar el bloqueo
+de su cuenta y de su correo, valide sus datos en las próximas 2 horas:
+
+https://portal.ejemplo-edf.mx/restablecer
+
+Si no realiza la validación, su cuenta será suspendida y deberá levantar un
+ticket con su jefe directo.
+
+Atentamente,
+Mesa de Ayuda TI
+EDF
+
+--b1_frontera_7c1e2a0153
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html><body style="font-family:Arial,sans-serif">
+<p>Estimado colaborador:</p>
+<p>Su contraseña de acceso a los sistemas de EDF <b>vence HOY</b>. Para evitar el bloqueo
+de su cuenta y de su correo, valide sus datos en las próximas 2 horas:</p>
+<p><a href="https://ejemplo-edf-acceso.invalid/restablecer?u=jlopez&amp;ref=7c1e2a">https://portal.ejemplo-edf.mx/restablecer</a></p>
+<p>Si no realiza la validación, su cuenta será suspendida y deberá levantar un
+ticket con su jefe directo.</p>
+<p>Atentamente,<br>Mesa de Ayuda TI<br>EDF</p>
+</body></html>
+
+--b1_frontera_7c1e2a0153--
