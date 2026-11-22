@@ -1,6 +1,6 @@
 # edf-ti-practica
 
-Repositorio de práctica para las **Sesiones 1 y 2** del curso de Claude Code para el equipo de TI de EDF.
+Repositorio de práctica para las **Sesiones 1 a 3** del curso de Claude Code para el equipo de TI de EDF.
 
 > **Todos los datos de este repositorio son ficticios.** Servidores, usuarios, contraseñas,
 > tokens, llaves y logs fueron inventados para el ejercicio. Nada de esto da acceso a
@@ -64,3 +64,20 @@ git push -u origin s2-<tu-nombre>
 ```
 
 En Windows, todo en Git Bash.
+
+## Sesión 3
+
+Necesitas Docker. Trae la rama de inicio desde el repositorio del curso y levanta los servicios:
+
+```bash
+docker run hello-world
+git fetch upstream s3-inicio
+git checkout -b s3-<tu-nombre> upstream/s3-inicio
+git push -u origin s3-<tu-nombre>
+docker compose up -d
+docker compose ps
+```
+
+Si `upstream` no existe: `git remote add upstream https://github.com/F-Urquizo/edf-ti-practica.git`.
+
+En Windows: Git Bash y Docker Desktop con WSL 2.
