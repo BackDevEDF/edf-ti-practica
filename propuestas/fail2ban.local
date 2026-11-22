@@ -1,0 +1,56 @@
+# propuestas/fail2ban.local - PROPUESTA, NO APLICADA (datos ficticios)
+#
+# Contexto: ver incidente/linea-del-tiempo.md. 4 IP hicieron 190 intentos SSH en 5.5 horas,
+# cada una con 5 a 8.5 minutos entre intentos: nunca más de 2 fallos en 10 minutos, unos
+# 10 por hora. Con los valores por defecto (maxretry 5, findtime 10m) ninguna se bloqueó.
+#
+# Simulación sobre incidente/auth.log, suponiendo que el atacante sigue igual tras cada desbloqueo:
+#   IP              1er bloqueo   2do       3ro (4 h)
+#   203.0.113.45    00:05:44      01:32:10  04:04:17
+#   198.51.100.23   00:18:05      01:49:35  04:21:25   <- bloqueada a las 05:13:41, el acceso de soporte no ocurre
+#   192.0.2.77      00:34:15      02:04:07  04:33:28
+#   203.0.113.118   00:48:33      02:20:49  04:48:08
+# Con el tercer bloqueo entra además la jaula recidive (1 semana).
+#
+# Se aplica en el servidor, por una persona, con el cambio documentado:
+#   sudo cp fail2ban.local /etc/fail2ban/jail.local && sudo fail2ban-client reload
+
+[DEFAULT]
+# Red interna y monitoreo: nunca se bloquean. mgarcia (10.20.0.61) falló 2 veces a las
+# 23:02-23:03 (auth.log:226 y auth.log:229) antes de entrar; con reglas más duras, o desde
+# fuera de la VPN, una persona así quedaría bloqueada.
+ignoreip = 127.0.0.1/8 ::1 10.20.0.0/16
+
+[sshd]
+enabled  = true
+# 5 fallos, como el valor por defecto: un usuario legítimo rara vez falla 5 veces seguidas.
+maxretry = 5
+# 1 hora en lugar de 10 minutos. Cada IP del ataque juntó 10 fallos en su peor hora,
+# el doble de maxretry: con 1 hora, cada una se bloquea en sus primeros 24 a 29 minutos.
+findtime = 1h
+# 1 hora el primer bloqueo; luego se duplica (2 h, 4 h, ...) hasta 1 semana.
+bantime  = 1h
+bantime.increment = true
+bantime.factor    = 2
+bantime.maxtime   = 1w
+
+[recidive]
+# Revisa el log de fail2ban: la misma IP bloqueada 3 veces en 1 día queda fuera 1 semana.
+# Es la jaula que mira días, no minutos: las 4 IP del ataque llegan a su tercer bloqueo
+# entre las 04:04 y las 04:48.
+enabled  = true
+logpath  = /var/log/fail2ban.log
+banaction = %(banaction_allports)s
+findtime = 1d
+maxretry = 3
+bantime  = 1w
+
+# Qué usuario legítimo podría quedar bloqueado:
+# - Alguien que escribe mal la contraseña 5 veces en una hora desde fuera de 10.20.0.0/16
+#   (casa, sin VPN). Con bantime.increment, la segunda vez queda 2 horas fuera.
+# - Varias personas detrás de la misma IP pública (NAT de una oficina o un proveedor):
+#   sus fallos se suman.
+# - Un script o un monitoreo con una llave o contraseña vencida, si no está en ignoreip.
+#
+# fail2ban es una capa más, no la corrección. La corrección de fondo es
+# PasswordAuthentication no en sshd_config (solo llaves) y una contraseña nueva para soporte.
