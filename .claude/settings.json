@@ -6,7 +6,13 @@
       "Read(**/llaves/**)",
       "Read(~/.ssh/**)",
       "Bash(cat .env*)",
-      "Bash(rm -rf *)"
+      "Bash(rm -rf *)",
+      "Bash(docker compose down -v*)",
+      "Bash(docker volume rm *)",
+      "Bash(docker system prune*)",
+      "Bash(sudo *)",
+      "Bash(iptables *)",
+      "Bash(ufw *)"
     ],
     "ask": [
       "Bash(git push *)",
