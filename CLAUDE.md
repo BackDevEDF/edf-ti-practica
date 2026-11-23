@@ -8,6 +8,7 @@ Todos los datos son ficticios.
 - [docs/scripts.md](docs/scripts.md): qué hace cada script, cómo se usa y sus códigos de salida.
 - [docs/servidores.md](docs/servidores.md): inventario de servidores y entornos.
 - [docs/decisiones.md](docs/decisiones.md): decisiones técnicas y por qué se tomaron.
+- [docs/diagnostico.md](docs/diagnostico.md): servicios, puertos, logs, comandos seguros/prohibidos y conexión a la base como `lector`.
 - `.claude/rules/scripts.md`: reglas de bash; se cargan solas al trabajar en `scripts/`.
 - `.claude/agents/revisor.md`: subagente revisor de solo lectura.
 
