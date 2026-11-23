@@ -8,3 +8,6 @@ respaldos/
 # OJO: .env, config/.env.produccion y llaves/ NO se ignoran.
 # Se versionan a propósito para la práctica de la Sesión 1 (datos ficticios).
 # En un repositorio real, .env* y llaves/ siempre deben ir aquí.
+
+# Reportes que exporta el laboratorio de la Sesión 3
+reportes/

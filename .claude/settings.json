@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/llaves/**)",
+      "Read(~/.ssh/**)",
+      "Bash(cat .env*)",
+      "Bash(rm -rf *)",
+      "Bash(docker compose down -v*)",
+      "Bash(docker volume rm *)",
+      "Bash(docker system prune*)",
+      "Bash(sudo *)",
+      "Bash(iptables *)",
+      "Bash(ufw *)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(docker *)",
+      "Bash(systemctl *)",
+      "Bash(ssh *)"
+    ],
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(./scripts/revisa-secretos.sh)",
+      "Bash(./scripts/revisa-secretos.sh *)"
+    ]
+  }
+}
